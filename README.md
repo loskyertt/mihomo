@@ -9,18 +9,43 @@
 
 > 这里以 Arch Linux 为例。
 
-## 2.1 安装二进制文件
+## 2.1 安装和基本配置
 
-首先安装 `mihomo`（Clash Meta）和 Web 界面：
+- 安装 `mihomo`（Clash Meta）：
 
 ```bash
 sudo pacman -S mihomo
 ```
 
 > mihomo 只有在 archlinuxcn 源、chaotic-aur 源、aur 源中才有。没有网络代理的化，建议先添加 archlinuxcn 源后，再进行下载安装。
-> WebUI 只是静态文件，你可以用本项目的 `ui` 或者从 [GitHub MetaCubeX/metacubexd](https://github.com/MetaCubeX/metacubexd?tab=readme-ov-file) 下载。还可以通过 pacman 安装：`sudo pacman -S metacubexd-bin`（archlinuxcn 源和 aur 源才有 MetaCubexXD）。
 
-配置文件位置是 `/etc/mihomo/config.yaml` 或 `~/.config/mihomo/config.yaml`。一般是将 `config.yaml` 复制到 `~/.config/mihomo/config.yaml` 下，而 `ui` 目录是放在和 `config.yaml` 同级目录下。
+- 启动服务：
+
+```bash
+sudo systemctl enable --now mihomo.service
+```
+
+- 配置：
+
+WebUI 只是静态文件，你可以用本项目的 `ui` 或者从 [GitHub MetaCubeX/metacubexd](https://github.com/MetaCubeX/metacubexd?tab=readme-ov-file) 下载。还可以通过 pacman 安装：`sudo pacman -S metacubexd-bin`（archlinuxcn 源和 aur 源才有 MetaCubexXD）。
+
+在当前目录下执行：
+
+```bash
+sudo cp config.yaml /etc/mihomo/config.yaml
+
+sudo cp -r ui /var/lib/mihomo/
+```
+
+> 配置文件位置是 `/etc/mihomo/config.yaml` 或 `~/.config/mihomo/config.yaml`。一般是将 `config.yaml` 复制到 `/etc/mihomo/config.yaml` 下，而 `ui` 目录是放在和 `/var/lib/mihomo/` 同级目录下。记得在 `config.yaml` 文件中填入订阅链接。
+
+- 重启服务：
+
+```bash
+sudo systemctl restart mihomo.service
+```
+
+> 一般情况下，将对以配置文件和 `ui` 文件复制到相应目录后，再重启 mihomo.service 就能成功使用了，如果没有成功，则继续往下看。
 
 ## 2.2 配置 Systemd 服务权限
 
@@ -55,7 +80,6 @@ CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_NET_ADMIN
 
 ```bash
 sudo systemctl restart mihomo
-
 ```
 
 你可以运行以下命令来查看 systemd 最终合并后的配置（有效配置）：
@@ -83,7 +107,6 @@ Group=your-group-name  # 填你的用户组
 ExecStart=/usr/bin/mihomo -d /etc/mihomo
 Restart=always
 
-# 对应 NixOS 中的能力设置
 AmbientCapabilities=CAP_NET_BIND_SERVICE CAP_NET_ADMIN
 CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_NET_ADMIN
 
