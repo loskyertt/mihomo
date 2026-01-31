@@ -1,7 +1,14 @@
 # 1. 文件说明
 
 - `config.yaml`：配置文件
-- `ui`：UI 文件
+- `metacubexd`：UI 文件
+- `zashboard`：UI 文件
+
+下载链接：
+
+- [mihomo 内核 - MetaCubeX/mihomo](https://github.com/MetaCubeX/mihomo)
+- [Dashboard - Zephyruso/zashboard](https://github.com/Zephyruso/zashboard)
+- [Dshboard - MetaCubeX/metacubexd](https://github.com/MetaCubeX/metacubexd)
 
 ---
 
@@ -17,7 +24,7 @@
 sudo pacman -S mihomo
 ```
 
-> mihomo 只有在 archlinuxcn 源、chaotic-aur 源、aur 源中才有。没有网络代理的化，建议先添加 archlinuxcn 源后，再进行下载安装。
+> mihomo 只有在 [archlinuxcn](https://help.mirror.nju.edu.cn/archlinuxcn/) 源、[chaotic-aur](https://aur.chaotic.cx/) 源、aur 源中才有。没有网络代理的化，建议先添加 [archlinuxcn](https://help.mirror.nju.edu.cn/archlinuxcn/) 源后，再进行下载安装。
 
 - 启动服务：
 
@@ -29,15 +36,23 @@ sudo systemctl enable --now mihomo.service
 
 WebUI 只是静态文件，你可以用本项目的 `ui` 或者从 [GitHub MetaCubeX/metacubexd](https://github.com/MetaCubeX/metacubexd?tab=readme-ov-file) 下载。还可以通过 pacman 安装：`sudo pacman -S metacubexd-bin`（archlinuxcn 源和 aur 源才有 MetaCubexXD）。
 
+> 配置文件位置是 `/etc/mihomo/config.yaml` 或 `~/.config/mihomo/config.yaml`。一般是将 `config.yaml` 复制到 `/etc/mihomo/config.yaml` 下，而 `ui` 目录是放在和 `/var/lib/mihomo/` 目录下。
+
 在当前目录下执行：
+
+复制配置文件：
 
 ```bash
 sudo cp config.yaml /etc/mihomo/config.yaml
-
-sudo cp -r ui /var/lib/mihomo/
 ```
 
-> 配置文件位置是 `/etc/mihomo/config.yaml` 或 `~/.config/mihomo/config.yaml`。一般是将 `config.yaml` 复制到 `/etc/mihomo/config.yaml` 下，而 `ui` 目录是放在和 `/var/lib/mihomo/` 目录下。记得在 `config.yaml` 文件中填入订阅链接。
+> 记得在 `config.yaml` 文件中填入订阅链接。
+
+复制 `ui` 文件（任选一个 dashboard 目录即可）： 
+
+```bash
+sudo cp -r zashboard /var/lib/mihomo/ui
+```
 
 - 重启服务：
 
