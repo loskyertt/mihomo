@@ -37,7 +37,7 @@ sudo cp config.yaml /etc/mihomo/config.yaml
 sudo cp -r ui /var/lib/mihomo/
 ```
 
-> 配置文件位置是 `/etc/mihomo/config.yaml` 或 `~/.config/mihomo/config.yaml`。一般是将 `config.yaml` 复制到 `/etc/mihomo/config.yaml` 下，而 `ui` 目录是放在和 `/var/lib/mihomo/` 同级目录下。记得在 `config.yaml` 文件中填入订阅链接。
+> 配置文件位置是 `/etc/mihomo/config.yaml` 或 `~/.config/mihomo/config.yaml`。一般是将 `config.yaml` 复制到 `/etc/mihomo/config.yaml` 下，而 `ui` 目录是放在和 `/var/lib/mihomo/` 目录下。记得在 `config.yaml` 文件中填入订阅链接。
 
 - 重启服务：
 
@@ -47,9 +47,32 @@ sudo systemctl restart mihomo.service
 
 > 一般情况下，将对以配置文件和 `ui` 文件复制到相应目录后，再重启 mihomo.service 就能成功使用了，如果没有成功，则继续往下看。
 
-## 2.2 配置 Systemd 服务权限
+---
 
-### 2.2.1 方式一（推荐）
+# 3.一些问题的解决方法
+
+## 3.1 防火墙设置 (Firewalld/UFW)
+
+如果你使用了防火墙（如 `firewalld`），需要手动放行：
+
+> 下面提到的 Meta 是你开启 TUN 模式创建的虚拟网卡，通过指令 `ip a` 查看。
+
+- **Firewalld**:
+
+```bash
+sudo firewall-cmd --permanent --zone=trusted --add-interface=Meta
+sudo firewall-cmd --reload
+```
+
+- **UFW**:
+
+```bash
+sudo ufw allow in on Meta
+```
+
+## 3.2 配置 Systemd 服务权限
+
+### 3.2.1 方式一（推荐）
 
 如果通过 `pacman` 安装，通常自带了 service 文件，你可以使用 systemd 自带的交互式命令，它会自动为你创建目录和文件：
 
@@ -90,7 +113,7 @@ systemctl cat mihomo
 
 你会看到文件底部出现了一个 `Drop-In: /etc/systemd/system/mihomo.service.d/override.conf` 区域。
 
-### 2.2.2 方式二
+### 3.2.2 方式二
 
 编辑（或创建）服务文件 `/etc/systemd/system/mihomo.service`：
 
@@ -114,7 +137,9 @@ CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_NET_ADMIN
 WantedBy=multi-user.target
 ```
 
-## 2.3 开启内核转发
+> 不推荐该方式，更新 mihomo 后，可能会导致配置失效。
+
+## 3.3 开启内核转发
 
 创建文件 `/etc/sysctl.d/99-ip-forward.conf`：
 
@@ -126,7 +151,7 @@ net.ipv6.conf.all.forwarding = 1
 
 然后执行 `sudo sysctl --system` 生效。
 
-## 2.4 防火墙与路由设置 (nftables/iptables)
+## 3.4 路由设置 (nftables/iptables)
 
 创建文件 `/etc/sysctl.d/99-rp-filter.conf`：
 
@@ -135,21 +160,4 @@ net.ipv4.conf.all.rp_filter = 2
 net.ipv4.conf.default.rp_filter = 2
 # 针对 config.yaml 中设置的 tun 接口（Meta）
 net.ipv4.conf.Meta.rp_filter = 2
-```
-
-## 2.5 信任接口 (Firewalld/UFW)
-
-如果你使用了防火墙（如 `firewalld`），需要手动放行：
-
-- **Firewalld**:
-
-```bash
-sudo firewall-cmd --permanent --zone=trusted --add-interface=Meta
-sudo firewall-cmd --reload
-```
-
-- **UFW**:
-
-```bash
-sudo ufw allow in on Meta
 ```

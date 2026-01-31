@@ -62,8 +62,8 @@ dns:
     # - 223.5.5.5  # 阿里
     # - 119.29.29.29  # 腾讯
     # === way 2 ===
-    - 114.114.114.114 # 中国大陆公共 DNS 服务器
-    - 8.8.8.8 # Google
+    - 114.114.114.114  # 中国大陆公共 DNS 服务器
+    - 8.8.8.8  # Google
     - tls://1.12.12.12:853
     - tls://223.5.5.5:853
     - system # 从系统配置中添加 DNS 服务器。若未找到，则打印错误日志并跳过。
@@ -73,8 +73,8 @@ dns:
     # - 223.5.5.5
     # - 119.29.29.29
     # === way 2 ===
-    - 114.114.114.114 # default value
-    - 8.8.8.8 # default value
+    - 114.114.114.114  # default value
+    - 8.8.8.8  # default value
     - tls://223.5.5.5:853 # DNS over TLS
     - https://doh.pub/dns-query
     - https://dns.alidns.com/dns-query#h3=true
@@ -84,8 +84,8 @@ dns:
   # 当不是 CN，则使用 fallback 中的 DNS 查询结果
   # 确保配置 fallback 时能够正常查询
   fallback:
-    - 8.8.8.8 # Google
-    - 1.1.1.1 # Cloudflare
+    - 8.8.8.8  # Google
+    - 1.1.1.1  # Cloudflare
 
   # 配置查询域名使用的 DNS 服务器
   nameserver-policy:
@@ -236,12 +236,13 @@ proxy-groups:
       - "Auto"
     use:
       - provider1
+      - provider2
   # 奈飞
   - name: "Netflix"
     type: select
     proxies:
       #         - test 这里填写你的自建节点
-      - "Auto"
+      - "PROXY"
     use:
       - provider1
   # 迪士尼
@@ -249,7 +250,7 @@ proxy-groups:
     type: select
     proxies:
       #         - test 这里填写你的自建节点
-      - "Auto"
+      - "PROXY"
     use:
       - provider1
   # 油管
@@ -257,7 +258,7 @@ proxy-groups:
     type: select
     proxies:
       #         - test 这里填写你的自建节点
-      - "Auto"
+      - "PROXY"
     use:
       - provider1
   # 声破天
@@ -265,7 +266,7 @@ proxy-groups:
     type: select
     proxies:
       #         - test 这里填写你的自建节点
-      - "Auto"
+      - "PROXY"
     use:
       - provider1
   # Tiktok
@@ -273,7 +274,7 @@ proxy-groups:
     type: select
     proxies:
       #         - test 这里填写你的自建节点
-      - "Auto"
+      - "PROXY"
     use:
       - provider1
   # 电报
@@ -281,7 +282,7 @@ proxy-groups:
     type: select
     proxies:
       #         - test 这里填写你的自建节点
-      - "Auto"
+      - "PROXY"
     use:
       - provider1
   # 推特
@@ -289,7 +290,7 @@ proxy-groups:
     type: select
     proxies:
       #         - test 这里填写你的自建节点
-      - "Auto"
+      - "PROXY"
     use:
       - provider1
   # chatgpt
@@ -297,7 +298,7 @@ proxy-groups:
     type: select
     proxies:
       #         - test 这里填写你的自建节点
-      - "Auto"
+      - "PROXY"
     use:
       - provider1
   # Copilot
@@ -305,7 +306,7 @@ proxy-groups:
     type: select
     proxies:
       #         - test 这里填写你的自建节点
-      - "Auto"
+      - "PROXY"
     use:
       - provider1
   # Onedrive
@@ -313,7 +314,7 @@ proxy-groups:
     type: select
     proxies:
       #         - test 这里填写你的自建节点
-      - "Auto"
+      - "PROXY"
     use:
       - provider1
   # 还可以继续添加其它代理组......
@@ -323,7 +324,7 @@ proxy-providers:
   # 机场名称：provider1（名称可自定义，要修改对应 path 的名称）
   provider1:
     type: http
-    url: "https://Gvo3r.subxly.cfd:8443/api/v1/client/919ee4e535da36baeb52b013ec43c090" # 订阅链接存放在双引号内
+    url: ""  # 订阅链接存放在双引号内
     path: ./proxy_providers/provider1.yaml # 默认存储在 /var/lib/mihomo/
     interval: 86400 # 机场订阅自动更新时间，单位：秒
     health-check:
@@ -335,7 +336,7 @@ proxy-providers:
   # 机场名称：provider2
   provider2:
     type: http
-    url: "https://x1.344211.cc/api/v1/client/subscribe?token=841633dcce03fedda0a781e176e2a501"
+    url: ""
     path: ./proxy_providers/provider2.yaml
     interval: 86400
     health-check:
